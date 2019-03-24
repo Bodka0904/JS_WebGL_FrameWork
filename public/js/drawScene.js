@@ -15,21 +15,20 @@ class Transform {
             pos);
         mat4.rotate(this.modelViewMatrix,  
             this.modelViewMatrix, 
-           rot[0],   
-           [1,0,0]);   
+           rot[2] ,   
+           [0,0,1]);   
         mat4.rotate(this.modelViewMatrix,  
             this.modelViewMatrix, 
            rot[1],   
            [0,1,0]);
         mat4.rotate(this.modelViewMatrix,  
             this.modelViewMatrix, 
-           rot[2],   
-           [0,0,1]);
+           rot[0] - Math.PI/2,   
+           [1,0,0]);
 
         mat4.scale(this.modelViewMatrix,
             this.modelViewMatrix,
             scale);
-       
     };
 
     GetModelViewMatrix(){
@@ -58,7 +57,7 @@ class Camera{
     UpdateCamera(){
         this.projectionMatrix = mat4.create();
 
-        mat4.lookAt(this.viewMatrix,this.position,[0,0,0],[0,1,0]);
+        
         mat4.perspective(this.projectionMatrix,
             this.fieldOfView,
             this.aspect,
@@ -66,7 +65,14 @@ class Camera{
             this.zFar);
 
             
-       
+        mat4.translate(this.projectionMatrix,
+                this.projectionMatrix,
+                [this.position[0],this.position[1],this.position[2] - this.distance]);
+                
+        mat4.rotate(this.projectionMatrix,
+                this.projectionMatrix,
+                this.rotation[2],
+                [0,0,1]);
         mat4.rotate(this.projectionMatrix,
                 this.projectionMatrix,
                 this.rotation[1],
@@ -75,16 +81,8 @@ class Camera{
                 this.projectionMatrix,
                 this.rotation[0],
                 [1,0,0]);
-        mat4.rotate(this.projectionMatrix,
-                this.projectionMatrix,
-                this.rotation[2],
-                [0,0,1]);
-
-        mat4.translate(this.projectionMatrix,
-                this.projectionMatrix,
-                this.position);
-        
-        
+    
+        mat4.lookAt(this.viewMatrix,this.position,[0,0,0],[0,1,0]);
         
              
           

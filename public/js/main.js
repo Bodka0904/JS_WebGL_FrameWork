@@ -7,9 +7,9 @@ function main() {
     function rend() {
         
         
-        //camera.Rotate([0,0,0]);
-        //camera.Move([0,0,0]);
-        camera.Rotate(rotation);
+        
+        camera.Move([0,0,0]);
+        camera.Rotate([0,0,0]);
         camera.UpdateCamera();
         
 

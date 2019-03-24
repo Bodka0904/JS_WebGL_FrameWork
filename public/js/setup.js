@@ -31,7 +31,7 @@ function setup(){
     
     
     transform = new Transform();
-    camera = new Camera(45 * Math.PI / 180,gl.canvas.clientWidth / gl.canvas.clientHeight,0.1,100,-10);
+    camera = new Camera(45 * Math.PI / 180,gl.canvas.clientWidth / gl.canvas.clientHeight,0.1,100,-20);
     shader = new Shader(vsSource,fsSource);
     player = new Player(monkeyHead,'/textures/SusanTexture.png');
     
