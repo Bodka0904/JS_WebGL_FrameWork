@@ -1,0 +1,1 @@
+CONVERT FBX MODEL FROM BLENDER INTO JSON USING assimp2json(path to assimp2json.exe -> path to .fbx -> path to create .json) THEN CONVERT IT TO JS FILE.
