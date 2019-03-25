@@ -68,7 +68,7 @@ class Camera{
         mat4.translate(this.projectionMatrix,
                 this.projectionMatrix,
                 [this.position[0],this.position[1],this.position[2] - this.distance]);
-                
+
         mat4.rotate(this.projectionMatrix,
                 this.projectionMatrix,
                 this.rotation[2],
@@ -165,6 +165,7 @@ class Shader{
               attribLocations: {
                 vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
                 textureCoord: gl.getAttribLocation(shaderProgram, 'aTextureCoord'),
+                normals: gl.getAttribLocation(shaderProgram, 'aNormal'),
 
               },
               uniformLocations:{
@@ -172,6 +173,11 @@ class Shader{
                 modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
                 uSampler: gl.getUniformLocation(shaderProgram, 'uSampler'),
                 viewMatrix: gl.getUniformLocation(shaderProgram, 'mView'),
+
+                //Light
+                ambientLight: gl.getUniformLocation(shaderProgram, 'ambientLightIntensity'),
+                sunLight: gl.getUniformLocation(shaderProgram, 'sunLightIntensity'),
+                sunDirection: gl.getUniformLocation(shaderProgram,'sunLightDirection'),
               },
             };
     };
@@ -183,11 +189,12 @@ class Shader{
 };
 
 class Render{
-    constructor(positions,indices,textureCoords) 
+    constructor(positions,indices,textureCoords,normals) 
     {
         this.positions = positions;
         this.indices = indices;
         this.textureCoords = textureCoords;
+        this.normals = normals;
         
         
     };
@@ -247,11 +254,18 @@ class Render{
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.textureCoords),
                 gl.STATIC_DRAW);
 
+        //Normal Buffer Data
+        const normalBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER,normalBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(this.normals),
+                gl.STATIC_DRAW);
+
 
         return {
             position: positionBuffer,
             textureCoord: textureCoordBuffer,
             indices: indexBuffer,
+            normals: normalBuffer,
             
         };
 
@@ -271,7 +285,7 @@ class Render{
             const numComponents = 3;  // pull out 3 values per iteration
             const type = gl.FLOAT;    
             const normalize = false;  
-            const stride = 0;         // how many bytes to get from one set of values to the next                 
+            const stride = 3 * Float32Array.BYTES_PER_ELEMENT;       // how many bytes to get from one set of values to the next                 
             const offset = 0;         // how many bytes inside the buffer to start from
   
   
@@ -289,15 +303,15 @@ class Render{
         }
         //Texture Buffer
         {
-            const num = 2; // every coordinate composed of 2 values
-            const type = gl.FLOAT; // the data in the buffer is 32 bit float
-            const normalize = false; // don't normalize
-            const stride = 0; // how many bytes to get from one set to the next
-            const offset = 0; // how many bytes inside the buffer to start from
+            const numComponents = 2; 
+            const type = gl.FLOAT; 
+            const normalize = false; 
+            const stride = 2 * Float32Array.BYTES_PER_ELEMENT; 
+            const offset = 0;
             gl.bindBuffer(gl.ARRAY_BUFFER, buffers.textureCoord);
             gl.vertexAttribPointer(
                 programInfo.attribLocations.textureCoord, 
-                num, 
+                numComponents, 
                 type, 
                 normalize, 
                 stride, 
@@ -308,8 +322,25 @@ class Render{
         //Bind Texture
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, texture);
-        
 
+        //Normal Buffer
+        {
+            const numComponents = 3; // every coordinate composed of 2 values
+            const type = gl.FLOAT; // the data in the buffer is 32 bit float
+            const normalize = true; // don't normalize
+            const stride = 3 * Float32Array.BYTES_PER_ELEMENT; // how many bytes to get from one set to the next
+            const offset = 0; // how many bytes inside the buffer to start from
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, buffers.normals);
+            gl.vertexAttribPointer(
+                programInfo.attribLocations.normals,
+                numComponents,
+                type,
+                normalize,
+                stride,
+                offset);
+            gl.enableVertexAttribArray(programInfo.attribLocations.normals);
+        }
 
         //Indices
         
@@ -330,8 +361,13 @@ class Render{
         gl.uniformMatrix4fv(
             programInfo.uniformLocations.viewMatrix,
             false,
-            viewMatrix,
-        )
+            viewMatrix);
+        
+        //Light Uniforms
+        gl.uniform3f(programInfo.uniformLocations.ambientLight,0.4, 0.4, 0.9);
+        gl.uniform3f(programInfo.uniformLocations.sunLight,0.9, 0.9, 0.9);
+        gl.uniform3f(programInfo.uniformLocations.sunDirection,3.0, 4.0, -2.0);
+
 
         
 

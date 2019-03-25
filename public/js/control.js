@@ -14,7 +14,7 @@ function control(transform,speed){
 
         if (key.keyCode == "37"){ //LEFT ARROW
             transform.rotate[1] += speed;
-            console.log(transform.move[0]);
+            
         }   
         if (key.keyCode == "39"){ //RIGHT ARROW
             transform.rotate[1] += -speed;

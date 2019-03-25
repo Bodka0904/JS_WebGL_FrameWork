@@ -5,7 +5,7 @@ class Mesh{
         this.textureSrc = textureSrc;
         this.buffers;
         this.texture;
-        this.render = new Render(this.model.meshes[0].vertices,[].concat.apply([],this.model.meshes[0].faces),this.model.meshes[0].texturecoords[0]);
+        this.render = new Render(this.model.meshes[0].vertices,[].concat.apply([],this.model.meshes[0].faces),this.model.meshes[0].texturecoords[0],this.model.meshes[0].normals);
 
     }
     
