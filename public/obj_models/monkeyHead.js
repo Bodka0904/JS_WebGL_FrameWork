@@ -1,4 +1,4 @@
-let monkeyHead ={
+let monkeyObj ={
 	 "rootnode": {
 		 "name": "RootNode"
 		,"transformation": [

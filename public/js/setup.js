@@ -2,12 +2,15 @@
 const canvas = document.querySelector("#glCanvas");
 const gl = canvas.getContext("webgl");
 
+
+
 //////////SETUP BUFFERS AND WINDOW//////////////
 let transform;
 let camera;
 let shader;
 let render;
 let player;
+let terrain;
 
 let buffers;
 let programInfo;
@@ -20,10 +23,11 @@ function setup(){
         return;
       }
       // Set clear color to black, fully opaque
-      gl.clearColor(0.5, 0.5, 0.0, 1.0);
+      gl.clearColor(0.5, 0.5, 0.7, 1.0);
       // Clear the color buffer with specified clear color
       gl.clear(gl.COLOR_BUFFER_BIT);
 
+      
      
 
     
@@ -31,11 +35,15 @@ function setup(){
     
     
     transform = new Transform();
-    camera = new Camera(45 * Math.PI / 180,gl.canvas.clientWidth / gl.canvas.clientHeight,0.1,100,-5);
+    camera = new Camera(45 * Math.PI / 180,gl.canvas.clientWidth / gl.canvas.clientHeight,0.1,100,-15);
     shader = new Shader(vsSource,fsSource);
-    player = new Player(monkeyHead,'/textures/SusanTexture.png');
-    
+    player = new Player(monkeyObj,'/textures/SusanTexture.png');
+    terrain = new Terrain(terrainObj,'/textures/SusanTexture.png');
+
+
     programInfo = shader.InitShaderProgram(gl);
     player.Init(gl);
+    terrain.Init(gl);
+    
 };
 

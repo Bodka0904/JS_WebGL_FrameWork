@@ -1,0 +1,1 @@
+TO CONVERT .DAE TO JSON PUT .DAE FILE IN FOLDER AND TYPE IN CMD \dae2json name.dae > name.json

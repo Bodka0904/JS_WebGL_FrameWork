@@ -48,7 +48,7 @@ class Camera{
         this.viewMatrix = mat4.create();
         this.distance = distance;
         this.position = [0,0,distance];
-        this.rotation = [0,0,0];
+        this.rotation = [0.3,0,0];
         
       
         
@@ -65,9 +65,7 @@ class Camera{
             this.zFar);
 
             
-        mat4.translate(this.projectionMatrix,
-                this.projectionMatrix,
-                [this.position[0],this.position[1],this.position[2] - this.distance]);
+        
 
         mat4.rotate(this.projectionMatrix,
                 this.projectionMatrix,
@@ -81,8 +79,13 @@ class Camera{
                 this.projectionMatrix,
                 this.rotation[0],
                 [1,0,0]);
-    
-        mat4.lookAt(this.viewMatrix,this.position,[0,0,0],[0,1,0]);
+        mat4.scale(this.projectionMatrix,
+            this.projectionMatrix,
+                    [1,1,1]);
+        mat4.translate(this.projectionMatrix,
+            this.projectionMatrix,
+            [this.position[0],this.position[1],this.position[2]]);
+        
         
              
           
@@ -91,9 +94,9 @@ class Camera{
     Move(pos)
     {
 
-        this.position[0] -= pos[0];
-        this.position[1] -= pos[1];
-        this.position[2] -= pos[2];
+        this.position[0] = -pos[0];
+        this.position[1] = -pos[1] - 3;
+        this.position[2] = -pos[2] + this.distance;
         
     }
     Rotate(rot)
@@ -103,12 +106,8 @@ class Camera{
         this.rotation[2] += rot[2];
       
     }
-    Follow(position,distance)
-    {
-        this.position[0] = (-Math.sin(this.rotation[1]) * distance) + position[0];
-        this.position[2] = (-Math.cos(this.rotation[1]) * distance) + position[2]; 
-        
-    }
+   
+    
 
     GetProjectionMatrix(){
         return this.projectionMatrix;
@@ -182,7 +181,13 @@ class Shader{
             };
     };
     
-    
+    Clear(gl){
+        gl.clearColor(0.0, 0.5, 0.7, 1.0);  // Clear to black, fully opaque
+        gl.clearDepth(1.0);                 // Clear everything
+        gl.enable(gl.DEPTH_TEST);           
+        gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
+        gl.clear(gl.COLOR_BUFFER_BIT);
+    }
 
     
     
@@ -272,11 +277,7 @@ class Render{
     };
 
     Draw(gl,programInfo,buffers,texture,modelViewMatrix,projectionMatrix,viewMatrix){
-        gl.clearColor(0.0, 0.5, 0.7, 1.0);  // Clear to black, fully opaque
-        gl.clearDepth(1.0);                 // Clear everything
-        gl.enable(gl.DEPTH_TEST);           
-        gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        
 
     
         

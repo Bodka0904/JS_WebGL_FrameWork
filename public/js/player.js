@@ -3,11 +3,13 @@ class Player{
     {
         this.mesh = new Mesh(model,textureSrc);
         this.transf = new Transform();
-        let move = [0,0,0];
+        let move = [0,2,0];
         let rotate = [0,0,0];
+        let scale = [1,1,1];
         this.transform = {
             move: move,
             rotate: rotate,
+            scale: scale,
         };
         
     }
@@ -21,7 +23,7 @@ class Player{
     }
 
     Move(){
-        this.transf.Transform(this.transform.move,this.transform.rotate,[1,1,1]);
+        this.transf.Transform(this.transform.move,this.transform.rotate,this.transform.scale);
     }
     
 
