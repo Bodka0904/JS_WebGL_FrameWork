@@ -9,7 +9,6 @@ class Mesh{
 
     }
     
-    
     Init(gl){
 
         this.buffers = this.render.InitBuffers(gl);
@@ -21,3 +20,26 @@ class Mesh{
         
     }
 };
+
+class MeshNoModel{
+    constructor(vertices,indices,texturecoords,textureSrc)
+    {
+        this.vertices = vertices;
+        this.indices = indices;
+        this.texturecoords = texturecoords;
+        this.textureSrc = textureSrc;
+
+        this.render = new Render(this.vertices,this.indices,this.texturecoords);
+    }
+    
+    Init(gl){
+
+        this.buffers = this.render.InitBuffers(gl);
+        this.texture = this.render.LoadTextures(gl,this.textureSrc)
+    }
+
+    Draw(gl,programInfo,modelViewMatrix,cameraProjectionMatrix,cameraViewMatrix,cameraWorldMatrix){
+        this.render.Draw(gl,programInfo,this.buffers,this.texture,modelViewMatrix,cameraProjectionMatrix,cameraViewMatrix,cameraWorldMatrix);
+        
+    }
+}

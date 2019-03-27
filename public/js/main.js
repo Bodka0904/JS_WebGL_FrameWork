@@ -4,11 +4,8 @@ function main() {
    
     setup();
     control(player.transform,0.1);
-  
-    
-    
-       
-        
+    terrain.LoadHeightMap(1,10);
+    terrain.Init(gl);
    
     function rend() {
         
@@ -24,10 +21,8 @@ function main() {
         player.Move();
         player.Draw(gl,programInfo,camera);
 
-        terrain.Move();
+
         terrain.Draw(gl,programInfo,camera);
-
-
         requestAnimationFrame(rend);
     };
     requestAnimationFrame(rend);
