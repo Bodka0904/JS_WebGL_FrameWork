@@ -19,6 +19,19 @@ class Mesh{
         this.render.Draw(gl,programInfo,this.buffers,this.texture,modelViewMatrix,cameraProjectionMatrix,cameraViewMatrix,cameraWorldMatrix);
         
     }
+    GetSphereRadius(){
+        let xarray = [];
+
+         for (var i = 0 ; i < this.model.meshes[0].vertices.length;i+=3)
+         {
+             xarray.push(this.model.meshes[0].vertices[i]);
+         }
+         
+         let MaxX = Math.max(...xarray);
+         let MinX = Math.min(...xarray);
+
+         return (Math.abs(MaxX) + Math.abs(MinX)) / 2;
+    }
 };
 
 class MeshNoModel{
@@ -42,5 +55,19 @@ class MeshNoModel{
     Draw(gl,programInfo,modelViewMatrix,cameraProjectionMatrix,cameraViewMatrix,cameraWorldMatrix){
         this.render.Draw(gl,programInfo,this.buffers,this.texture,modelViewMatrix,cameraProjectionMatrix,cameraViewMatrix,cameraWorldMatrix);
         
+    }
+
+    GetSphereRadius(){
+        let xarray = [];
+
+         for (var i = 0 ; i < this.vertices.length;i+=3)
+         {
+             xarray.push(this.vertices[i]);
+         }
+         
+         let MaxX = Math.max(...xarray);
+         let MinX = Math.min(...xarray);
+
+         return (Math.abs(MaxX) + Math.abs(MinX)) / 2;
     }
 }

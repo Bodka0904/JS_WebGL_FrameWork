@@ -20,15 +20,22 @@ function control(transform,speed){
             transform.rotate[1] += -speed;
         }
         if (key.keyCode == "38"){ //UP ARROW
-            transform.move[2] += speed * Math.cos(transform.rotate[1]);
-            transform.move[0] += speed * Math.sin(transform.rotate[1]);
             
+            //3D VELOCITY MOVEMENT
+            let onePercent = (Math.abs(Math.cos(transform.rotate[1])) + Math.abs(Math.sin(transform.rotate[1]))) / 100 
+            let z = (Math.cos(transform.rotate[1]) / onePercent);
+            let x = (Math.sin(transform.rotate[1]) / onePercent);
+
+            transform.move[2] += speed * Math.cos(transform.rotate[1]) - ((speed * Math.sin(transform.rotate[0]) / 100) * z);
+            transform.move[0] += speed * Math.sin(transform.rotate[1]) - ((speed * Math.sin(transform.rotate[0]) / 100) * x);
+            transform.move[1] -= speed * Math.sin(transform.rotate[0]);
+            ////////////////////////
 
         }
         if (key.keyCode == "40"){ //DOWN ARROW
             transform.move[2] -= speed * Math.cos(transform.rotate[1]);
             transform.move[0] -= speed * Math.sin(transform.rotate[1]);
-
+            transform.move[1] += speed * Math.sin(transform.rotate[0]);
         }
            
        
@@ -54,7 +61,7 @@ function control(transform,speed){
         if(key.keyCode == "98") //2
         {
             transform.rotate[0] -= speed;
-            console.log(transform.rotate[0]);
+            
         }
         if(key.keyCode == "104") //8
         {

@@ -7,13 +7,14 @@ class Sphere{
         this.textureCoords = [];
         this.normals = [];
 
+        this.radius;
         this.size = size;
         this.textureSrc = textureSrc;
 
 
         this.mesh;
         this.transf = new Transform();
-        let move = [10,5,10];
+        let move = [0,0,0];
         let rotate = [0,0,0];
         let scale = [1,1,1];
         this.transform = {
@@ -78,12 +79,45 @@ class Sphere{
 
     Draw(gl,programInfo,camera){
        
-        this.transform.move[1]-= 0.05;
         this.mesh.Draw(gl,programInfo,this.transf.GetModelViewMatrix(),camera.GetProjectionMatrix(),camera.GetViewMatrix());
     }
 
     Move(){
         this.transf.Transform(this.transform.move,this.transform.rotate,this.transform.scale);
+    }
+
+    GetRadius(){
+         let xarray = [];
+
+         for (var i = 0 ; i < this.vertices.length;i+=3)
+         {
+             xarray.push(this.vertices[i]);
+         }
+         
+         let MaxX = Math.max(...xarray);
+         let MinX = Math.min(...xarray);
+
+         this.radius = (Math.abs(MaxX) + Math.abs(MinX)) / 2;
+    }
+
+
+
+    Collied(position, radius) {
+        var x = position[0] - this.transform.move[0];
+        var y = position[1] - this.transform.move[1];
+      
+        var d = Math.sqrt(x * x + y * y);
+
+         
+        if (d <= this.radius + radius)
+        {
+            return true;
+            
+        }
+        
+        
+        
+        
     }
     
 

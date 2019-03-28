@@ -3,7 +3,7 @@ class Player{
     {
         this.mesh = new Mesh(model,textureSrc);
         this.transf = new Transform();
-        let move = [10,5,10];
+        let move = [25,5,10];
         let rotate = [0,0,0];
         let scale = [1,1,1];
         this.transform = {
@@ -11,10 +11,11 @@ class Player{
             rotate: rotate,
             scale: scale,
         };
-        
+        this.radius;
     }
     Init(gl){
         this.mesh.Init(gl);
+        this.radius = this.mesh.GetSphereRadius();
     }
 
     Draw(gl,programInfo,camera){
@@ -26,5 +27,12 @@ class Player{
         this.transf.Transform(this.transform.move,this.transform.rotate,this.transform.scale);
     }
     
-
+    Bounce(sphere){
+        if(sphere.Collied(this.transform.move,this.radius))
+        {
+            this.transform.rotate[0] = -this.transform.rotate[0];
+            this.transform.rotate[1] = -this.transform.rotate[1];
+            this.transform.rotate[2] = -this.transform.rotate[2];
+        }
+    }
 }
