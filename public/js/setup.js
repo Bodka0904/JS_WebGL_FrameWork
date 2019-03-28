@@ -38,7 +38,7 @@ function setup(){
     camera = new Camera(45 * Math.PI / 180,gl.canvas.clientWidth / gl.canvas.clientHeight,0.1,100,-15);
     shader = new Shader(vsSource,fsSource);
     player = new Player(monkeyObj,'/textures/SusanTexture.png');
-    terrain = new Terrain(heightmap,'/textures/SusanTexture.png');
+    terrain = new Terrain(heightmap,'/textures/grass.jpg');
 
 
     programInfo = shader.InitShaderProgram(gl);

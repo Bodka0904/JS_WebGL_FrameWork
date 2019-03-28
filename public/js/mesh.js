@@ -22,14 +22,15 @@ class Mesh{
 };
 
 class MeshNoModel{
-    constructor(vertices,indices,texturecoords,textureSrc)
+    constructor(vertices,indices,texturecoords,normals,textureSrc)
     {
         this.vertices = vertices;
         this.indices = indices;
         this.texturecoords = texturecoords;
+        this.normals = normals;
         this.textureSrc = textureSrc;
 
-        this.render = new Render(this.vertices,this.indices,this.texturecoords);
+        this.render = new Render(this.vertices,this.indices,this.texturecoords,this.normals);
     }
     
     Init(gl){
