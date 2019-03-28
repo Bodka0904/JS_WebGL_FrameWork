@@ -1,5 +1,5 @@
 class Terrain{
-    constructor(heightmap,textureSrc)
+    constructor(heightmap,size,height,textureSrc)
     {   
         this.heightmap = heightmap;
         this.heights = [];
@@ -8,6 +8,9 @@ class Terrain{
         this.indices = [];
         this.textureCoords = [];
         this.normals = [];
+
+        this.size = size;
+        this.height = height;
 
         this.textureSrc = textureSrc;
            
@@ -24,7 +27,7 @@ class Terrain{
         };
     }
 
-    LoadHeightMap(size,height){
+    LoadHeightMap(){
       
          
         for (var i = 0; i < this.heightmap.length;++i)
@@ -47,9 +50,9 @@ class Terrain{
             for (var j = 0; j < this.heightmap.length ;++j)
             {
                 
-                this.positions[pointer] = i*size;
-                this.positions[pointer+1] = this.heights[i][j]*height;
-                this.positions[pointer+2] = j*size;
+                this.positions[pointer] = i*this.size;
+                this.positions[pointer+1] = this.heights[i][j]*this.height;
+                this.positions[pointer+2] = j*this.size;
                 
                 
                 pointer += 3;
@@ -138,6 +141,59 @@ class Terrain{
       
             return [heightL - heightR, 2, heightD - heightU];
         }
+    }
+    fmod(a,b) 
+    { 
+        return Number((a - (Math.floor(a / b) * b)).toPrecision(8)); 
+    };
+    Collision(move)
+    {
+        let gridSquareSize = this.size;
+
+        let gridX = Math.round(move[0] / gridSquareSize);
+        let gridZ = Math.round(move[2] / gridSquareSize);
+
+        let xCoord = this.fmod(move[0],gridSquareSize) / gridSquareSize;
+        let zCoord = this.fmod(move[2],gridSquareSize) / gridSquareSize;
+        
+        let answer;
+
+        if (gridX >= this.heights.length - 1 || gridZ >= this.heights.length - 1 || gridX < 0 || gridZ < 0)
+        {
+            answer = move[1];
+        }
+        else
+        {
+            if(xCoord <= 1 - zCoord)
+            {
+
+                answer = this.BaryCentric([0,(this.heights[gridX][gridZ] * this.height) + this.transform.move[1],0],[1,(this.heights[gridX+1][gridZ] * this.height)+this.transform.move[1],0],
+                                            [0,(this.heights[gridX][gridZ+1] * this.height) + this.transform.move[1],1],[xCoord,zCoord]);
+            }
+            else
+            {
+                answer = this.BaryCentric([1,(this.heights[gridX+1][gridZ] * this.height) + this.transform.move[1],0],[1,(this.heights[gridX+1][gridZ+1] * this.height)+this.transform.move[1],1],
+                                            [0,(this.heights[gridX][gridZ+1] * this.height) + this.transform.move[1],1],[xCoord,zCoord]);
+            }
+        }
+        if (move[1] < answer)
+        {
+            
+            move[1] = answer;
+        }
+       
+        
+
+    }
+
+    BaryCentric(p1,p2,p3,pos)
+    {
+        let det = ((p2[2] - p3[2]) * (p1[0] - p3[0])) + ((p3[0] - p2[0]) * (p1[2] - p3[2]));
+        let l1 = ((p2[2] - p3[2]) * (pos[0] - p3[0]) + (p3[0] - p2[0]) * (pos[1] - p3[2])) / det;
+	    let l2 = ((p3[2] - p1[2]) * (pos[0] - p3[0]) + (p1[0] - p3[0]) * (pos[1] - p3[2])) / det;
+        let l3 = 1 - l1 - l2;
+        
+        return l1 * p1[1] * l2 * p2[1] + l3 * p3[1];
     }
 
     Init(gl){

@@ -3,7 +3,7 @@ class Player{
     {
         this.mesh = new Mesh(model,textureSrc);
         this.transf = new Transform();
-        let move = [0,2,0];
+        let move = [10,5,10];
         let rotate = [0,0,0];
         let scale = [1,1,1];
         this.transform = {

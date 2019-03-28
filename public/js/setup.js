@@ -10,7 +10,8 @@ let camera;
 let shader;
 let render;
 let player;
-let terrain;
+let sphere;
+
 
 let buffers;
 let programInfo;
@@ -35,10 +36,10 @@ function setup(){
     
     
     transform = new Transform();
-    camera = new Camera(45 * Math.PI / 180,gl.canvas.clientWidth / gl.canvas.clientHeight,0.1,100,-15);
+    camera = new Camera(45 * Math.PI / 180,gl.canvas.clientWidth / gl.canvas.clientHeight,0.1,100,-15,0.7);
     shader = new Shader(vsSource,fsSource);
     player = new Player(monkeyObj,'/textures/SusanTexture.png');
-    terrain = new Terrain(heightmap,'/textures/grass.jpg');
+    sphere = new Sphere(20,20,'/textures/grass.jpg');
 
 
     programInfo = shader.InitShaderProgram(gl);

@@ -38,7 +38,7 @@ class Transform {
 };
 
 class Camera{
-    constructor(fieldOfView,aspect,zNear,zFar,distance)
+    constructor(fieldOfView,aspect,zNear,zFar,distance,rotation)
     {
         this.fieldOfView = fieldOfView;
         this.aspect = aspect;
@@ -47,8 +47,9 @@ class Camera{
         this.projectionMatrix = mat4.create();
         this.viewMatrix = mat4.create();
         this.distance = distance;
-        this.position = [0,0,distance];
-        this.rotation = [0.3,0,0];
+        this.rotation = rotation;
+        this.position = [0,distance,distance];
+        this.rotation = [rotation,0,0];
         
       
         
@@ -95,7 +96,7 @@ class Camera{
     {
 
         this.position[0] = -pos[0];
-        this.position[1] = -pos[1] - 3;
+        this.position[1] = -pos[1] + this.distance;
         this.position[2] = -pos[2] + this.distance;
         
     }
@@ -367,7 +368,7 @@ class Render{
         //Light Uniforms
         gl.uniform3f(programInfo.uniformLocations.ambientLight,0.4, 0.4, 0.9);
         gl.uniform3f(programInfo.uniformLocations.sunLight,0.9, 0.9, 0.9);
-        gl.uniform3f(programInfo.uniformLocations.sunDirection,3.0, 4.0, -2.0);
+        gl.uniform3f(programInfo.uniformLocations.sunDirection,3.0, 4.0, 2.0);
 
 
         
