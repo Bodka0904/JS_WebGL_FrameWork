@@ -26,13 +26,48 @@ class Player{
     Move(){
         this.transf.Transform(this.transform.move,this.transform.rotate,this.transform.scale);
     }
+    Fly(speed){
+        this.transform.move[2] += speed * Math.cos(this.transform.rotate[1]);
+        this.transform.move[0] += speed * Math.sin(this.transform.rotate[1]);
+
+        return true;
+    }
     
     Bounce(sphere){
-        if(sphere.Collied(this.transform.move,this.radius))
+        if(sphere.Collision(this.transform.move,this.radius))
         {
             this.transform.rotate[0] = -this.transform.rotate[0];
             this.transform.rotate[1] = -this.transform.rotate[1];
             this.transform.rotate[2] = -this.transform.rotate[2];
+
+            if (this.transform.move[0] > sphere.transform.move[0])
+            {
+                this.transform.move[0] += 0.1;
+
+            }
+            else
+            {
+                this.transform.move[0] == 0.1;
+
+            }
+
+            if (this.transform.move[1] > sphere.transform.move[1])
+            {
+                this.transform.move[1] += 0.1;
+            }
+            else
+            {
+                this.transform.move[1] -= 0.1;
+            }
+
+            if ( this.transform.move[2] > sphere.transform.move[2])
+            {
+                this.transform.move[2] += 0.1;
+            }
+            else
+            {
+                this.transform.move[2] -= 0.1;
+            }
         }
     }
 }

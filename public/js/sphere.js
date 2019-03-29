@@ -100,25 +100,16 @@ class Sphere{
          this.radius = (Math.abs(MaxX) + Math.abs(MinX)) / 2;
     }
 
+    Collision(position,radius){
 
-
-    Collied(position, radius) {
-        var x = position[0] - this.transform.move[0];
-        var y = position[1] - this.transform.move[1];
-      
-        var d = Math.sqrt(x * x + y * y);
-
-         
-        if (d <= this.radius + radius)
+        
+        if (Math.pow(this.transform.move[0] - position[0],2) + Math.pow(this.transform.move[1] - position[1],2) + Math.pow(this.transform.move[2] - position[2],2) <= Math.pow(this.radius - radius + 2,2))
         {
             return true;
-            
         }
-        
-        
-        
-        
     }
+        
+        
     
 
 }

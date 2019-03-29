@@ -166,6 +166,7 @@ class Shader{
                 vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
                 textureCoord: gl.getAttribLocation(shaderProgram, 'aTextureCoord'),
                 normals: gl.getAttribLocation(shaderProgram, 'aNormal'),
+               
 
               },
               uniformLocations:{
@@ -201,6 +202,7 @@ class Render{
         this.indices = indices;
         this.textureCoords = textureCoords;
         this.normals = normals;
+        
         
         
     };
@@ -266,12 +268,15 @@ class Render{
         gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(this.normals),
                 gl.STATIC_DRAW);
 
+        
+        
 
         return {
             position: positionBuffer,
             textureCoord: textureCoordBuffer,
             indices: indexBuffer,
             normals: normalBuffer,
+           
             
         };
 
@@ -344,6 +349,8 @@ class Render{
             gl.enableVertexAttribArray(programInfo.attribLocations.normals);
         }
 
+       
+
         //Indices
         
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
@@ -375,12 +382,12 @@ class Render{
 
 
 
-            
         {
             const vertexCount = this.indices.length;
             const type = gl.UNSIGNED_SHORT;
             const offset = 0;
             gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
         }
+       
     }
 };

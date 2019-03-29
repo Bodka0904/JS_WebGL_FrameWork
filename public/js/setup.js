@@ -11,6 +11,7 @@ let shader;
 let render;
 let player;
 let sphere;
+let particle;
 
 
 let buffers;
@@ -42,8 +43,10 @@ function setup(){
     sphere = new Sphere(20,20,'/textures/grass.jpg');
 
 
+
     programInfo = shader.InitShaderProgram(gl);
     player.Init(gl);
+    
    
     
 };

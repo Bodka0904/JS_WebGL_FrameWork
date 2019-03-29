@@ -8,18 +8,16 @@ function main() {
     sphere.Init(gl);
     sphere.GetRadius();
 
-     
-   
    
     function rend() {
         
         shader.Clear(gl);
-    
+        player.Fly(0.1)
         camera.Move(player.transform.move);
         
         camera.UpdateCamera();
        
-        //sphere.Collied(player.transform.move,player.radius);
+     
         player.Bounce(sphere);
         player.Move();
         
@@ -27,6 +25,9 @@ function main() {
 
 
         sphere.Draw(gl,programInfo,camera);
+
+       
+////////////////////////////////////////////////////
         requestAnimationFrame(rend);
     };
     requestAnimationFrame(rend);
